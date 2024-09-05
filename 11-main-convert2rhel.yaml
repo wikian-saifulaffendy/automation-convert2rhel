@@ -40,27 +40,32 @@
       block:
         - name: Set current play backup path variable
           ansible.builtin.set_fact:
-            fact_centos_repos_backup_path: " {{ centos_repos_path }}/{{ fact_current_timestamp }} "
+            fact_centos_repos_backup_path: " /tmp/centos_repos_backup_{{ fact_current_timestamp }} "
 
         - name: Create a backup directory
           ansible.builtin.file:
             path: fact_centos_repos_backup_path
             state: directory
-            mode: '0750'
-       
+            mode: '0755'
+
         - name: Gather list of .repo files
           ansible.builtin.find:
             path: centos_repos_path
             patterns:
               - '*.repo'
           register: reg_repo_files
-        
-        - name: Compress YUM repo files into a tar.gz archive
-          ansible.builtin.archive:
-            path: " {{ item.path }} "
-            dest: {{ fact_centos_repos_backup_path }}
-            format: gz
-          with_items: "{{ reg_repo_files.files }}"
+
+        - name: Create a tar.gz archive of YUM repo files
+          ansible.builtin.command:
+            cmd: tar -zcvf {{ fact_centos_repos_backup_path }}.tar.gz /etc/yum.repos.d/
           when: reg_repo_files.matched > 0
-          
-             
+
+        - name: Confirm backup was created
+          ansible.builtin.stat:
+            path: " {{ fact_centos_repos_backup_path }}.tar.gz "
+          register: reg_backup_status
+
+        - name: Print status of backup
+          ansible.builtin.debug:
+            msg: "Backup file created at {{ fact_centos_repos_backup_path }}.tar.gz"
+          when: backup_stareg_backup_status.stat.exists
