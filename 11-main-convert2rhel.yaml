@@ -40,13 +40,14 @@
       block:
         - name: Set current play backup path variable
           ansible.builtin.set_fact:
-            fact_centos_repos_backup_path: " /tmp/centos_repos_backup_{{ fact_current_timestamp }} "
+            fact_centos_repos_backup_path: "/tmp/centos_repos_backup_{{ fact_current_timestamp }}"
 
         - name: Create a backup directory
           ansible.builtin.file:
             path: fact_centos_repos_backup_path
             state: directory
             mode: '0755'
+          register: reg_backup_directory_creation
 
         - name: Gather list of .repo files
           ansible.builtin.find:
@@ -62,7 +63,7 @@
 
         - name: Confirm backup was created
           ansible.builtin.stat:
-            path: " {{ fact_centos_repos_backup_path }}.tar.gz "
+            path: "{{ fact_centos_repos_backup_path }}.tar.gz"
           register: reg_backup_status
 
         - name: Print status of backup
