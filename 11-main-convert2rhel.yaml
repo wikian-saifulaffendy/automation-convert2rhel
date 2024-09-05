@@ -46,7 +46,7 @@
 
         - name: Create a backup directory
           ansible.builtin.file:
-            path: fact_centos_repos_backup_path
+            path: "{{ fact_centos_repos_backup_path }}"
             state: directory
             mode: '0755'
 
