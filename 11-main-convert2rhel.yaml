@@ -69,4 +69,4 @@
         - name: Print status of backup
           ansible.builtin.debug:
             msg: "Backup file created at {{ fact_centos_repos_backup_path }}.tar.gz"
-          when: backup_stareg_backup_status.stat.exists
+          when: reg_backup_status.stat.exists
