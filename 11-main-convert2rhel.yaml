@@ -49,19 +49,10 @@
             path: fact_centos_repos_backup_path
             state: directory
             mode: '0755'
-          register: reg_backup_directory_creation
-
-        - name: Gather list of .repo files
-          ansible.builtin.find:
-            path: centos_repos_path
-            patterns:
-              - '*.repo'
-          register: reg_repo_files
 
         - name: Create a tar.gz archive of YUM repo files
           ansible.builtin.command:
             cmd: tar -zcvf {{ fact_centos_repos_backup_path }}.tar.gz /etc/yum.repos.d/
-          when: reg_repo_files.matched > 0
 
         - name: Confirm backup was created
           ansible.builtin.stat:
