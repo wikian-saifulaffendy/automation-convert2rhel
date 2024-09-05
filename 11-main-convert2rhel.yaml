@@ -74,3 +74,8 @@
         - name: Print error message if block fails
           ansible.builtin.debug:
             msg: "An error occurred while backing up and compressing /etc/yum.repos.d/"
+    
+    - name: Installing Convert2rhel package
+      block:
+        - name: Copying 
+        - name: 
