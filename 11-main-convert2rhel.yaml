@@ -52,10 +52,10 @@
 
         - name: Copy repos into temp backup directory
           ansible.builtin.copy:
-            src: "{{ centos_repos_path }}*"
+            remote_src: true
+            src: "{{ centos_repos_path }}"
             dest: "{{ fact_centos_repos_backup_path }}"
             mode: '0755'
-            remote_src: true
 
         - name: Create a tar.gz archive of YUM repo files
           ansible.builtin.command:
