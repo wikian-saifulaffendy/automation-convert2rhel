@@ -1,0 +1,14 @@
+---
+- name: Convert2rhel setup for offfline migration
+  hosts: localhost
+  become: false
+  gather_facts: true
+  
+  tasks: 
+    - name: Set current play timestamp variable
+      ansible.builtin.set_fact:
+        current_timestamp: "{{ ansible_date_time.iso8601_basic_short  }}"
+
+    - name: Display the timestamp
+      ansible.builtin.debug:
+        msg: "Current timestamp is {{ current_timestamp }}"
