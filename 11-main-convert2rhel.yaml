@@ -3,6 +3,8 @@
   hosts: localhost
   become: false
   gather_facts: true
+  vars:
+    - centos_repos_path: /etc/yum.repos.d/
 
   tasks:
     - name: Set current play timestamp variable
